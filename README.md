@@ -21,7 +21,7 @@ build/build.py ── inline JS/CSS/KaTeX/font ──► out/index.html (1 file,
 RFM NusaBean dihitung ulang dari 108 invoice mentah (`build/rfm.py`) dan dicocokkan ke kunci fasilitator — 2 baris kunci ternyata tidak konsisten dengan rumus worksheet-nya sendiri (lihat halaman Beranda → koreksi).
 
 ## Batasan jujur
-- Format simulasi ujian (25 PG + 2 kasus, 100 menit) adalah tebakan wajar, bukan bocoran.
+- Format simulasi ujian (30 PG + 2 kasus, 100 menit) adalah tebakan wajar, bukan bocoran.
 - Batas numerik grid segmen RFM = konvensi workshop (slide tidak memberi angka batas).
 - Materi slide milik dosen/Prasetiya Mulya; ini ringkasan belajar pribadi.
 
