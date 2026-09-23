@@ -1,0 +1,789 @@
+[
+ {
+  "b": "kopi",
+  "t": "Kopinya enak banget, aroma dan rasanya konsisten dari cangkir pertama sampai terakhir.",
+  "r": 5,
+  "a": {
+   "Produk": 1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Pelayanan baristanya ramah dan cepat, order langsung dibuatkan tanpa nunggu lama.",
+  "r": 5,
+  "a": {
+   "Pelayanan": 1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Pengiriman cepat banget, kemasannya rapi dan aman sampai rumah tanpa tumpah sedikit pun.",
+  "r": 5,
+  "a": {
+   "Pengiriman & Kemasan": 1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Suasana kedainya nyaman banget buat kerja, playlist musiknya juga enak didengar.",
+  "r": 5,
+  "a": {
+   "Suasana": 1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Harganya murah tapi kualitasnya premium, worth it banget buat kantong mahasiswa.",
+  "r": 5,
+  "a": {
+   "Harga": 1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Kopi susu gula arennya juara, manisnya pas dan gak eneg.",
+  "r": 5,
+  "a": {
+   "Produk": 1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "CS-nya sigap banget bantu ganti pesanan yang salah tanpa ribet.",
+  "r": 5,
+  "a": {
+   "Pelayanan": 1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Packaging cup-nya kokoh, es batu gak cepat cair meski dikirim jauh.",
+  "r": 5,
+  "a": {
+   "Pengiriman & Kemasan": 1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Tempat duduknya luas dan pencahayaan bagus, betah nongkrong lama di sini.",
+  "r": 5,
+  "a": {
+   "Suasana": 1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Promo buy 1 get 1 bikin harga jadi super worth it minggu ini.",
+  "r": 5,
+  "a": {
+   "Harga": 1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Rasanya lumayan enak, cukup memuaskan buat coffee shop baru.",
+  "r": 4,
+  "a": {
+   "Produk": 1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Pelayanannya cukup ramah walau agak lama sedikit karena rame.",
+  "r": 4,
+  "a": {
+   "Pelayanan": 1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Pengirimannya masih lumayan cepat, kemasan juga rapi meski kardusnya biasa saja.",
+  "r": 4,
+  "a": {
+   "Pengiriman & Kemasan": 1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Suasananya lumayan cozy, walau kadang berisik pas jam ramai.",
+  "r": 4,
+  "a": {
+   "Suasana": 1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Harganya masih terjangkau untuk ukuran kualitas segini, cukup worth it.",
+  "r": 4,
+  "a": {
+   "Harga": 1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Es kopinya lumayan seger, cocok buat siang hari yang panas.",
+  "r": 4,
+  "a": {
+   "Produk": 1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Baristanya cukup helpful pas ditanya rekomendasi menu.",
+  "r": 4,
+  "a": {
+   "Pelayanan": 1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Kopinya lumayan, tapi krimernya kebanyakan jadi agak eneg.",
+  "r": 3,
+  "a": {
+   "Produk": -1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Rasanya biasa saja, sesuai harganya yang memang standar.",
+  "r": 3,
+  "a": {
+   "Produk": 0,
+   "Harga": 0
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Pelayanan oke tapi pengiriman agak lambat dari biasanya.",
+  "r": 3,
+  "a": {
+   "Pelayanan": 1,
+   "Pengiriman & Kemasan": -1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Suasana tempatnya rame banget siang tadi, jadi kurang nyaman buat ngobrol.",
+  "r": 3,
+  "a": {
+   "Suasana": -1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Harganya naik sedikit, tapi porsinya juga ditambah jadi masih wajar.",
+  "r": 3,
+  "a": {
+   "Harga": 0
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Rasa kopinya enak tapi pengirimannya lama banget hampir 2 jam.",
+  "r": 3,
+  "a": {
+   "Produk": 1,
+   "Pengiriman & Kemasan": -1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Kopinya asem gak enak, kayaknya bijinya udah gak fresh.",
+  "r": 2,
+  "a": {
+   "Produk": -1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Pelayanannya kurang ramah, ditanya malah dijawab ketus.",
+  "r": 2,
+  "a": {
+   "Pelayanan": -1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Pengirimannya telat sejam dari estimasi, es-nya udah cair semua.",
+  "r": 2,
+  "a": {
+   "Pengiriman & Kemasan": -1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Tempatnya berisik banget dan meja kotor gak dibersihin.",
+  "r": 2,
+  "a": {
+   "Suasana": -1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Harganya lumayan mahal buat rasa yang biasa aja.",
+  "r": 2,
+  "a": {
+   "Harga": -1,
+   "Produk": 0
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Kopinya hambar dan encer, kayak kebanyakan air.",
+  "r": 1,
+  "a": {
+   "Produk": -1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Pelayanan parah banget, nunggu 40 menit dan pesanan ketuker.",
+  "r": 1,
+  "a": {
+   "Pelayanan": -1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Kemasan bocor pas sampai, kopinya tumpah semua di dalam tas.",
+  "r": 1,
+  "a": {
+   "Pengiriman & Kemasan": -1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Suasananya bikin gak betah, AC mati dan panas banget di dalam.",
+  "r": 1,
+  "a": {
+   "Suasana": -1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Harganya mahal banget tapi kualitasnya jauh dari ekspektasi, kecewa.",
+  "r": 1,
+  "a": {
+   "Harga": -1,
+   "Produk": -1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "Kecewa berat, kopi rusak dan basi pas sampai rumah.",
+  "r": 1,
+  "a": {
+   "Produk": -1
+  }
+ },
+ {
+  "b": "kopi",
+  "t": "CS-nya gak respon sama sekali padahal komplain udah 3 hari.",
+  "r": 1,
+  "a": {
+   "Pelayanan": -1
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Kualitas produknya bagus banget, formulanya lembut di kulit sensitif aku.",
+  "r": 5,
+  "a": {
+   "Kualitas Produk": 1
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Pelayanan CS-nya cepat tanggap, bantu pilihin produk sesuai jenis kulit.",
+  "r": 5,
+  "a": {
+   "Pelayanan": 1
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Pengiriman kilat dan kemasan bubble wrap rapi banget, botolnya aman gak pecah.",
+  "r": 5,
+  "a": {
+   "Pengiriman & Kemasan": 1
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Harganya terjangkau banget untuk kualitas seaktif ini, worth every penny.",
+  "r": 5,
+  "a": {
+   "Harga": 1
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Kulit jadi glowing dan lembap setelah rutin pakai dua minggu, efeknya nyata!",
+  "r": 5,
+  "a": {
+   "Efek di Kulit": 1
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Serumnya cepat meresap dan gak lengket sama sekali, tekstur favorit aku.",
+  "r": 5,
+  "a": {
+   "Kualitas Produk": 1
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Adminnya sabar banget jawab pertanyaan detail soal kandungan produk.",
+  "r": 5,
+  "a": {
+   "Pelayanan": 1
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Kemasan pump-nya higienis dan gak tumpah walau dibawa traveling.",
+  "r": 5,
+  "a": {
+   "Pengiriman & Kemasan": 1
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Promo bundling bikin harga jadi murah banget dibanding beli satuan.",
+  "r": 5,
+  "a": {
+   "Harga": 1
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Jerawat mulai kempes dan kemerahan hilang setelah pemakaian rutin.",
+  "r": 5,
+  "a": {
+   "Efek di Kulit": 1
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Kualitasnya cukup bagus, lumayan sesuai klaim di kemasan.",
+  "r": 4,
+  "a": {
+   "Kualitas Produk": 1
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Pelayanannya lumayan responsif walau balesnya agak lama.",
+  "r": 4,
+  "a": {
+   "Pelayanan": 1
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Pengiriman masih lumayan cepat, kemasan cukup aman meski box-nya penyok dikit.",
+  "r": 4,
+  "a": {
+   "Pengiriman & Kemasan": 1
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Harganya cukup masuk akal untuk ukuran skincare lokal.",
+  "r": 4,
+  "a": {
+   "Harga": 1
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Kulit lumayan membaik, kusamnya berkurang meski belum maksimal.",
+  "r": 4,
+  "a": {
+   "Efek di Kulit": 1
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Teksturnya ringan dan lumayan cepat meresap di kulit.",
+  "r": 4,
+  "a": {
+   "Kualitas Produk": 1
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Produknya cukup oke tapi baunya agak menyengat, masih bisa ditoleransi.",
+  "r": 3,
+  "a": {
+   "Kualitas Produk": 0
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Efeknya biasa saja di kulitku, gak ada perubahan signifikan tapi juga gak breakout.",
+  "r": 3,
+  "a": {
+   "Efek di Kulit": 0
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Pelayanan oke tapi pengirimannya agak lambat dari biasanya.",
+  "r": 3,
+  "a": {
+   "Pelayanan": 1,
+   "Pengiriman & Kemasan": -1
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Harganya sedikit naik tapi ukuran botolnya juga lebih besar sekarang.",
+  "r": 3,
+  "a": {
+   "Harga": 0
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Teksturnya enak tapi efek ke kulit belum kelihatan, masih pakai seminggu.",
+  "r": 3,
+  "a": {
+   "Kualitas Produk": 1,
+   "Efek di Kulit": 0
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Kualitas produknya mengecewakan, teksturnya lengket dan susah nyerap.",
+  "r": 2,
+  "a": {
+   "Kualitas Produk": -1
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Pelayanannya lambat banget, chat gak dibales sampai dua hari.",
+  "r": 2,
+  "a": {
+   "Pelayanan": -1
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Pengiriman lama dan kemasan agak penyok pas sampai.",
+  "r": 2,
+  "a": {
+   "Pengiriman & Kemasan": -1
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Harganya kemahalan untuk hasil yang biasa-biasa saja.",
+  "r": 2,
+  "a": {
+   "Harga": -1
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Kulit jadi agak kering dan sedikit gatal, kayaknya kurang cocok buatku.",
+  "r": 2,
+  "a": {
+   "Efek di Kulit": -1
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Breakout parah setelah pakai 3 hari, kulit jadi merah-merah dan perih.",
+  "r": 1,
+  "a": {
+   "Efek di Kulit": -1
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Botolnya bocor pas sampai, isi produk tumpah sebagian di dalam paket.",
+  "r": 1,
+  "a": {
+   "Pengiriman & Kemasan": -1
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Kecewa berat, produk beda banget sama deskripsi, kualitasnya murahan.",
+  "r": 1,
+  "a": {
+   "Kualitas Produk": -1
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "CS-nya gak profesional, komplain malah disalahin balik.",
+  "r": 1,
+  "a": {
+   "Pelayanan": -1
+  }
+ },
+ {
+  "b": "skincare",
+  "t": "Harganya mahal banget tapi bikin kulit malah rusak, sangat kecewa.",
+  "r": 1,
+  "a": {
+   "Harga": -1,
+   "Efek di Kulit": -1
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Bahannya adem dan gak nerawang, kualitasnya jauh di atas ekspektasi harga segini.",
+  "r": 5,
+  "a": {
+   "Kualitas Bahan": 1
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Ukurannya pas banget sesuai size chart, gak kebesaran atau kesempitan.",
+  "r": 5,
+  "a": {
+   "Ukuran & Fit": 1
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Pelayanan onlinenya ramah banget, fast respon dan bantu pilihin size.",
+  "r": 5,
+  "a": {
+   "Pelayanan": 1
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Pengiriman cepat dan packing rapi banget, dibungkus plastik tebal anti debu.",
+  "r": 5,
+  "a": {
+   "Pengiriman & Kemasan": 1
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Harganya murah banget tapi kualitas jahitannya rapi, worth it banget.",
+  "r": 5,
+  "a": {
+   "Harga": 1
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Jahitannya rapi dan kainnya tebal, awet dipakai berkali-kali.",
+  "r": 5,
+  "a": {
+   "Kualitas Bahan": 1
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Fit-nya pas banget di badan, model potongannya juga flattering.",
+  "r": 5,
+  "a": {
+   "Ukuran & Fit": 1
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Admin sabar banget dibantuin tuker size tanpa ribet.",
+  "r": 5,
+  "a": {
+   "Pelayanan": 1
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Dikirim same-day dan sampai dalam kondisi mulus, gak kusut sama sekali.",
+  "r": 5,
+  "a": {
+   "Pengiriman & Kemasan": 1
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Diskon gede bikin harga jadi super worth it buat kualitas sebagus ini.",
+  "r": 5,
+  "a": {
+   "Harga": 1
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Bahannya lumayan adem, cukup nyaman dipakai seharian.",
+  "r": 4,
+  "a": {
+   "Kualitas Bahan": 1
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Size-nya cukup pas, meski agak longgar sedikit di bagian pinggang.",
+  "r": 4,
+  "a": {
+   "Ukuran & Fit": 1
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Pelayanannya cukup responsif, balas chat gak terlalu lama.",
+  "r": 4,
+  "a": {
+   "Pelayanan": 1
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Pengiriman masih lumayan cepat, kemasannya cukup rapi.",
+  "r": 4,
+  "a": {
+   "Pengiriman & Kemasan": 1
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Harganya cukup masuk akal untuk kualitas bahan sebagus ini.",
+  "r": 4,
+  "a": {
+   "Harga": 1
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Modelnya lumayan bagus dan bahannya nyaman dipakai.",
+  "r": 4,
+  "a": {
+   "Kualitas Bahan": 1
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Bahannya oke tapi warnanya sedikit beda dari foto, masih bisa diterima.",
+  "r": 3,
+  "a": {
+   "Kualitas Bahan": 0
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Ukurannya biasa saja, gak terlalu istimewa tapi juga gak mengecewakan.",
+  "r": 3,
+  "a": {
+   "Ukuran & Fit": 0
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Pelayanan oke tapi pengirimannya agak lama dari estimasi.",
+  "r": 3,
+  "a": {
+   "Pelayanan": 1,
+   "Pengiriman & Kemasan": -1
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Harganya sedikit naik tapi kualitas bahannya juga ikut naik.",
+  "r": 3,
+  "a": {
+   "Harga": 0
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Fit-nya pas di badan tapi jahitan di bagian lengan agak longgar.",
+  "r": 3,
+  "a": {
+   "Ukuran & Fit": 1,
+   "Kualitas Bahan": -1
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Bahannya tipis dan gampang nerawang, gak sesuai deskripsi sama sekali.",
+  "r": 2,
+  "a": {
+   "Kualitas Bahan": -1
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Ukurannya kekecilan padahal udah pesan sesuai chart, sempit banget.",
+  "r": 2,
+  "a": {
+   "Ukuran & Fit": -1
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Pelayanannya lambat, komplain baru dibales setelah dua hari.",
+  "r": 2,
+  "a": {
+   "Pelayanan": -1
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Pengirimannya lama dan kemasannya kotor kena debu jalan.",
+  "r": 2,
+  "a": {
+   "Pengiriman & Kemasan": -1
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Harganya kemahalan untuk kualitas bahan yang tipis begini.",
+  "r": 2,
+  "a": {
+   "Harga": -1
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Jahitannya lepas cuma sekali cuci, kualitas bahannya benar-benar buruk.",
+  "r": 1,
+  "a": {
+   "Kualitas Bahan": -1
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Size-nya salah kirim total, minta M dikirim XL, sangat mengecewakan.",
+  "r": 1,
+  "a": {
+   "Ukuran & Fit": -1
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Paket sampai dalam kondisi rusak, kemasan sobek dan baju kotor kena oli.",
+  "r": 1,
+  "a": {
+   "Pengiriman & Kemasan": -1
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "CS-nya gak bisa dihubungi sama sekali padahal barang salah kirim.",
+  "r": 1,
+  "a": {
+   "Pelayanan": -1
+  }
+ },
+ {
+  "b": "fashion",
+  "t": "Harganya mahal tapi kualitas bahannya jelek banget, menyesal beli.",
+  "r": 1,
+  "a": {
+   "Harga": -1,
+   "Kualitas Bahan": -1
+  }
+ }
+]

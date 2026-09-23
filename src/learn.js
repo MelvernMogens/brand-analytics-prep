@@ -26,6 +26,16 @@ function Home() {
       <button class="resetlink" id="resetp">${icon('refresh')} Reset progress</button>
     </section>
 
+    ${QZ.some(q => q.src === 'dosen') ? `<section class="card fmt leak">
+      <div class="row between"><div class="label red">${icon('flag')} Latihan dari dosen — prioritas #1</div><span class="tag red">bocoran UTS</span></div>
+      <div class="fmt-list">
+        <a href="#/latihan?d=1"><span class="num">${QZ.filter(q => q.src === 'dosen').length}</span><span><b>PG asli dosen (5 opsi A–E)</b><small>kunci + pembahasan kenapa benar & kenapa pengecoh salah</small></span>${icon('chev')}</a>
+        <a href="#/essay/teori"><span class="num">E</span><span><b>Essay teori</b><small>3 soal persis dari dosen + 4 prediksi · jawaban model per poin rubrik</small></span>${icon('chev')}</a>
+        <a href="#/essay/dosen"><span class="num">∑</span><span><b>Essay hitungan: kedai kopi & Chitosi</b><small>negative ratio + RFM ranges, dibedah langkah demi langkah + soal acak serupa</small></span>${icon('chev')}</a>
+      </div>
+      <p class="note">${icon('bulb')}<span>Pola UTS kemungkinan: PG konsep & kasus W1–W7, essay teori (definisi → bandingkan → contoh → integrasi), dan essay hitung (rating → % → negative ratio; Recency → ranges → kode RFM → segmen → persona → program).</span></p>
+    </section>` : ''}
+
     <section class="card fmt">
       <div class="row between"><div class="label">${icon('target')} Peta belajar</div><span class="tag">alur course dosen</span></div>
       <div class="flow">${['Brand question', 'Acquire', 'Clean', 'Explore', 'Segment', 'Diagnose', 'Recommend'].map((s, i) => `<span class="fl"><b>${i + 1}</b>${s}</span>`).join('')}</div>
@@ -45,7 +55,7 @@ function Home() {
       <a class="lcard" href="#/latihan"><span class="lc-ic blue">${icon('list')}</span><b>Pilihan ganda</b><small>${QZ.length} soal · pembahasan tiap soal</small></a>
       <a class="lcard" href="#/essay"><span class="lc-ic amber">${icon('pen')}</span><b>Studi kasus</b><small>${ES_KEYS.reduce((a, k) => a + T[ES_TOPIC[k]].examples.length, 0)} kasus + soal RFM acak tak terbatas</small></a>
       <a class="lcard" href="#/hafalan"><span class="lc-ic green">${icon('cards')}</span><b>Kartu hafalan</b><small>${nConcept} konsep + ${nFormula} rumus</small></a>
-      <a class="lcard" href="#/uts"><span class="lc-ic red">${icon('timer')}</span><b>Simulasi ujian</b><small>${SIM_N} PG + ${SIM_ES.length} kasus · timer ${SIM_MIN} menit</small></a>
+      <a class="lcard" href="#/uts"><span class="lc-ic red">${icon('timer')}</span><b>Simulasi ujian</b><small>${SIM_N} PG + ${SIM_ES.length} essay · timer ${SIM_MIN} menit</small></a>
     </div>
 
     ${CORR.length ? `<section class="card corr mt-l">

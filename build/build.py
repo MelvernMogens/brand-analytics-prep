@@ -8,6 +8,8 @@ subprocess.run(['node', str(ROOT / 'build' / 'texcheck.js')], check=True)
 data = json.loads((ROOT / 'build' / 'content.json').read_text())
 nb = json.loads((ROOT / 'content' / 'data' / 'nusabean_raw.json').read_text())
 data.setdefault('extra', {})['nusabean'] = nb
+sf = ROOT / 'content' / 'data' / 'sentences.json'
+data['extra']['sentences'] = json.loads(sf.read_text()) if sf.exists() else []
 corr = ROOT / 'content' / 'corrections.json'
 if corr.exists():
     data['extra']['corrections'] = json.loads(corr.read_text())

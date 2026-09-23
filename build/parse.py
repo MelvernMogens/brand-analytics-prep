@@ -38,6 +38,8 @@ SAFE.update(abs=abs, round=round, min=min, max=max, sum=sum, pow=pow, len=len, s
 NBF = ROOT / 'content' / 'data' / 'nusabean.json'
 SAFE['NB'] = json.loads(NBF.read_text()) if NBF.exists() else {}
 SAFE['math'] = math
+LKF = ROOT / 'content' / 'data' / 'leak.json'
+SAFE['LK'] = json.loads(LKF.read_text()) if LKF.exists() else {}
 G = {'__builtins__': {}, **SAFE}
 
 errors = []
@@ -218,8 +220,10 @@ def parse_quiz(path):
         elif mode == 'why':
             q['why'].append(line.strip())
     for q in qs:
-        if q['ans'] < 0 or len(q['opts']) != 4:
-            errors.append(f"quiz {q['id']} ({q['q'][:1]}): needs 4 options + exactly 1 correct (got {len(q['opts'])}, ans={q['ans']})")
+        nopt = 5 if 'dosen' in path.name else 4
+        q['src'] = 'dosen' if 'dosen' in path.name else ''
+        if q['ans'] < 0 or len(q['opts']) != nopt:
+            errors.append(f"quiz {q['id']} ({q['q'][:1]}): needs {nopt} options + exactly 1 correct (got {len(q['opts'])}, ans={q['ans']})")
         if len(set(q['opts'])) != len(q['opts']):
             errors.append(f"quiz {q['id']}: duplicate options")
     return qs

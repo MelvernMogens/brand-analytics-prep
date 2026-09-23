@@ -60,6 +60,7 @@ function quizTotals() { const s = qStats(); let n = 0, r = 0; Object.keys(s).for
 function recordQ(q, ok) { const s = qStats(); const x = s[q.id] || { a: 0, r: 0 }; x.a++; if (ok) x.r++; x.last = ok ? 1 : 0; s[q.id] = x; Store.set('qs', s); }
 function qText(q) { return soalHTML(q.q); }
 function QuizHome(k, v) {
+  if (k === 'd') return runQuiz(QZ.filter(q => q.src === 'dosen'), 'Latihan dosen (bocoran UTS)', '#/latihan');
   if (k === 't' && T[v]) return runQuiz(QZ.filter(q => q.topic === v), `Latihan: ${T[v].title}`, '#/t/' + v);
   if (k === 'w' && +v >= 1 && +v <= 7) return runQuiz(shuffle(QZ.filter(q => q.week === +v)), `Latihan PG Week ${v}`, '#/latihan');
   const s = qStats();
@@ -69,6 +70,7 @@ function QuizHome(k, v) {
     <header class="phead"><div class="kicker">Latihan</div><h1>Latihan soal</h1><p class="lead">Pilihan ganda dengan pembahasan langsung, plus studi kasus bergaya ujian.</p></header>
     <div class="grid2">
       <button class="lcard" data-go="mix"><span class="lc-ic blue">${icon('shuffle')}</span><b>Campuran 10 soal</b><small>Acak dari semua week</small></button>
+      ${QZ.some(q => q.src === 'dosen') ? `<a class="lcard hot" href="#/latihan?d=1"><span class="lc-ic red">${icon('flag')}</span><b>Latihan dosen (bocoran UTS)</b><small>${QZ.filter(q => q.src === 'dosen').length} soal PG asli dari form dosen · 5 opsi</small></a>` : ''}
       <button class="lcard" data-go="wrong" ${wrong.length ? '' : 'disabled'}><span class="lc-ic red">${icon('refresh')}</span><b>Ulangi yang salah</b><small>${wrong.length ? wrong.length + ' soal terakhir salah' : 'Belum ada soal salah'}</small></button>
     </div>
     <div class="sec-h mt-l"><h2>Per week</h2><span class="muted sm">${tt.n ? `akurasi total ${Math.round(tt.r / tt.n * 100)}% dari ${tt.n} jawaban` : ''}</span></div>
@@ -88,7 +90,7 @@ function optsHTML(q, order, chosen, reveal) {
     let c = 'opt';
     if (reveal) { if (oi === q.ans) c += ' right'; else if (oi === chosen) c += ' wrong'; else c += ' dim'; }
     else if (oi === chosen) c += ' sel';
-    return `<button class="${c}" data-oi="${oi}" ${reveal ? 'disabled' : ''}><span class="ol">${'ABCD'[j]}</span><span class="ot">${esc(q.opts[oi])}</span>${reveal && oi === q.ans ? icon('check', 'oi') : ''}${reveal && oi === chosen && oi !== q.ans ? icon('x', 'oi') : ''}</button>`;
+    return `<button class="${c}" data-oi="${oi}" ${reveal ? 'disabled' : ''}><span class="ol">${LETTERS[j]}</span><span class="ot">${esc(q.opts[oi])}</span>${reveal && oi === q.ans ? icon('check', 'oi') : ''}${reveal && oi === chosen && oi !== q.ans ? icon('x', 'oi') : ''}</button>`;
   }).join('');
 }
 function whyHTML(q) {
@@ -97,7 +99,7 @@ function whyHTML(q) {
 function runQuiz(list, title, back) {
   if (!list.length) return;
   let i = 0; const res = [];
-  const orders = list.map(q => shuffle([0, 1, 2, 3]));
+  const orders = list.map(q => shuffle(q.opts.map((_, i) => i)));
   mount(`<div class="page narrow quiz"><nav class="crumb"><a href="${back}">${icon('chevl')} Kembali</a></nav><div id="qz"></div></div>`);
   function paint() {
     const q = list[i];
@@ -111,7 +113,7 @@ function runQuiz(list, title, back) {
         res[i] = { q, ok, oi };
         recordQ(q, ok);
         $('.opts', $('#qz')).innerHTML = optsHTML(q, orders[i], oi, true);
-        $('#qfb').innerHTML = `<div class="verdict ${ok ? 'ok' : 'no'}">${icon(ok ? 'check' : 'x')} ${ok ? 'Benar!' : 'Belum tepat — jawaban benar: ' + 'ABCD'[orders[i].indexOf(q.ans)]}</div>${whyHTML(q)}
+        $('#qfb').innerHTML = `<div class="verdict ${ok ? 'ok' : 'no'}">${icon(ok ? 'check' : 'x')} ${ok ? 'Benar!' : 'Belum tepat — jawaban benar: ' + LETTERS[orders[i].indexOf(q.ans)]}</div>${whyHTML(q)}
           <div class="row end mt"><button class="btn primary" id="qnext">${i + 1 < list.length ? 'Soal berikutnya ' + icon('chev') : 'Lihat hasil ' + icon('chev')}</button></div>`;
         if (!RM) $('#qfb').classList.add('new');
         $('#qnext').onclick = () => { i++; i < list.length ? paint() : done(); window.scrollTo({ top: 0, behavior: smooth() }); };
@@ -196,13 +198,80 @@ function genRFM() {
     answer: `(a) R = ${rows.map(r => r.R).join(', ')} hari. (b) Kode: ${rows.map(r => r.id + ' ' + r.code).join(', ')}. (c) ${rows.map(r => r.id + ' ' + r.seg).join(', ')}. (d) ${top.s} memegang ${pctOf(top.M)} NetSales (${fmtN(top.M)} dari ${fmtN(tot)}) → ${SEG_ACT[top.s]}.`
   };
 }
-const GEN = { rfm: genRFM };
+
+/* ===== generator: RFM ranges (gaya Chitosi) ===== */
+const DOSEN_SEG = [['Champions', (r, f, m) => r >= 4 && f >= 4 && m >= 4], ['Loyal Customers', (r, f, m) => f >= 4 && m >= 3 && r >= 3], ['Potential Loyalist', (r, f, m) => r >= 4 && f >= 2 && f <= 3 && m >= 2 && m <= 3], ['At Risk', (r, f, m) => r <= 2 && f >= 3 && m >= 3], ['Hibernating', (r, f, m) => r <= 2 && f <= 2 && m <= 2]];
+function dosenSeg(r, f, m) { const x = DOSEN_SEG.find(s => s[1](r, f, m)); return x ? x[0] : 'Tidak masuk kriteria'; }
+function eqBin(v, lo, w) { return w ? Math.min(4, Math.floor((v - lo) / w + 1e-9)) : 0; }
+function rpx(x) { return 'Rp' + Math.round(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+function genRange() {
+  const [brand] = pick([['Chitosi'], ['Kriuk Nusa'], ['Snackie'], ['Keripik Mama'], ['Rasa Bumi']]);
+  const n = 12, ref = new Date(Date.UTC(2025, 11, 31));
+  const rows = Array.from({ length: n }, (_, i) => { const R = rnd(5, 360), F = rnd(1, 14); return { id: 'C' + (41 + i), R, F, M: (F * rnd(3, 7) + rnd(0, 4)) * 100000 }; });
+  rows[0].R = rnd(3, 20); rows[1].R = rnd(330, 364); rows[2].F = 1; rows[3].F = 14;
+  rows.forEach(r => { const d = new Date(ref); d.setUTCDate(d.getUTCDate() - r.R); r.last = `${String(d.getUTCDate()).padStart(2, '0')}/${String(d.getUTCMonth() + 1).padStart(2, '0')}/${d.getUTCFullYear()}`; });
+  const st = k => { const v = rows.map(r => r[k]); const lo = Math.min(...v), hi = Math.max(...v); return { lo, hi, w: (hi - lo) / 5 }; };
+  const sR = st('R'), sF = st('F'), sM = st('M');
+  rows.forEach(r => { r.r = 5 - eqBin(r.R, sR.lo, sR.w); r.f = eqBin(r.F, sF.lo, sF.w) + 1; r.m = eqBin(r.M, sM.lo, sM.w) + 1; r.code = '' + r.r + r.f + r.m; r.seg = dosenSeg(r.r, r.f, r.m); });
+  const rng = (s, i) => [s.lo + i * s.w, s.lo + (i + 1) * s.w];
+  const f1 = x => fmt(x, 1);
+  const segs = {}; rows.forEach(r => { (segs[r.seg] = segs[r.seg] || []).push(r); });
+  const tot = rows.reduce((a, r) => a + r.M, 0);
+  return {
+    title: `RFM ranges ${brand} — ${n} pelanggan`, src: 'Soal acak · gaya latihan dosen', uses: ['dsn-range', 'w5-recency', 'w5-code'].filter(k => F[k]),
+    soal: [`Data penjualan "${brand}" tahun 2025. Reference date = 31/12/2025.`, '| Customer | Pembelian terakhir | Jumlah transaksi | Total belanja |', ...rows.map(r => `| ${r.id} | ${r.last} | ${r.F} | ${rpx(r.M)} |`), '',
+      '(a) Hitung Recency (hari) tiap pelanggan.', '(b) Buat ranges (interval sama lebar) untuk R, F, M lalu beri skor 1–5 (5 = terbaik).', '(c) Bentuk kode RFM.', '(d) Kelompokkan: Champions (R≥4,F≥4,M≥4) · Loyal (F≥4,M≥3,R≥3) · Potential Loyalist (R≥4,F 2–3,M 2–3) · At Risk (R≤2,F≥3,M≥3) · Hibernating (R≤2,F≤2,M≤2).'],
+    steps: [
+      { title: '(a) Recency', why: '31/12/2025 dikurangi tanggal pembelian terakhir.', tex: '', rows: [['Customer', 'Terakhir', 'Recency'], ...rows.map(r => [r.id, r.last, String(r.R)])] },
+      { title: '(b) Lebar range', why: 'w = (max − min)/5 untuk tiap variabel.', tex: `w_R = \\tfrac{${sR.hi} - ${sR.lo}}{5} = ${f1(sR.w)} \\quad w_F = \\tfrac{${sF.hi} - ${sF.lo}}{5} = ${f1(sF.w)} \\quad w_M = \\tfrac{${fmtN(sM.hi)} - ${fmtN(sM.lo)}}{5} = ${fmtN(sM.w)}` },
+      { title: '(b) Tabel ranges', why: 'Recency dibalik: range hari paling sedikit = skor 5. Batas atas kelas terakhir ikut kelas itu.', tex: '', rows: [['Skor', 'Recency (hari)', 'Frequency', 'Monetary'], ...[5, 4, 3, 2, 1].map(sc => { const iR = 5 - sc, iF = sc - 1; const a = rng(sR, iR), b = rng(sF, iF), c = rng(sM, iF); return [String(sc), `${f1(a[0])} – <${f1(a[1])}`, `${f1(b[0])} – <${f1(b[1])}`, `${rpx(c[0])} – <${rpx(c[1])}`]; })] },
+      { title: '(b)(c) Skor & kode', why: 'Tempatkan tiap nilai ke range-nya, lalu tempel R, F, M.', tex: '', rows: [['Customer', 'R', 'F', 'M', 'Skor R', 'Skor F', 'Skor M', 'Kode'], ...rows.map(r => [r.id, r.R, r.F, rpx(r.M), r.r, r.f, r.m, r.code].map(String))] },
+      { title: '(d) Segmen', why: 'Uji berurutan Champions → Loyal → Potential Loyalist → At Risk → Hibernating. Yang tidak cocok satu pun: sebutkan & beri label usulan.', tex: '', rows: [['Segmen', 'Customer', 'Total belanja', '%'], ...Object.keys(segs).map(s => [s, segs[s].map(r => r.id).join(', '), rpx(segs[s].reduce((a, r) => a + r.M, 0)), fmt(segs[s].reduce((a, r) => a + r.M, 0) / tot * 100, 1) + '%'])] }
+    ],
+    answer: `(a) Recency: ${rows.map(r => r.id + ' ' + r.R).join(', ')}. (b) Lebar range R ${f1(sR.w)} hari, F ${f1(sF.w)}, M ${rpx(sM.w)}. (c) Kode: ${rows.map(r => r.id + ' ' + r.code).join(', ')}. (d) ${Object.keys(segs).map(s => s + ': ' + segs[s].map(r => r.id).join(', ')).join(' · ')}.`
+  };
+}
+/* ===== generator: ulasan → rating → % → negative ratio (gaya kedai kopi) ===== */
+const BIZ = { kopi: ['kedai kopi', ['Kopi Senja', 'Seduh Pagi', 'Kopi Runcing']], skincare: ['brand skincare lokal', ['GlowNusa', 'SkinLab', 'Wangi Kulit']], fashion: ['brand fashion lokal', ['ARUNIKA', 'Batik Rasa', 'Kain Kita']] };
+function genSent() {
+  const bizKeys = Object.keys(BIZ).filter(b => SENT.filter(x => x.b === b).length >= 10);
+  if (!bizKeys.length) return genRange();
+  const b = pick(bizKeys), [kind, names] = BIZ[b], name = pick(names);
+  let rows;
+  for (let t = 0; t < 40; t++) {
+    rows = shuffle(SENT.filter(x => x.b === b)).slice(0, 10);
+    const d = {}; rows.forEach(x => Object.keys(x.a).forEach(k => { const e = d[k] = d[k] || { p: 0, n: 0 }; if (x.a[k] > 0) e.p++; else if (x.a[k] < 0) e.n++; }));
+    const nr = Object.keys(d).map(k => d[k].n / Math.max(1, d[k].p + d[k].n)).sort((a, b) => b - a);
+    if (Object.keys(d).length >= 3 && nr[0] > 0 && nr[0] !== nr[1]) break;
+  }
+  const n = rows.length, pos = rows.filter(x => x.r >= 4).length, neu = rows.filter(x => x.r === 3).length, neg = rows.filter(x => x.r <= 2).length;
+  const dims = {}; rows.forEach(x => Object.keys(x.a).forEach(k => { const e = dims[k] = dims[k] || { p: 0, n: 0, z: 0 }; if (x.a[k] > 0) e.p++; else if (x.a[k] < 0) e.n++; else e.z++; }));
+  const dk = Object.keys(dims).sort((a, c) => dims[c].n / Math.max(1, dims[c].p + dims[c].n) - dims[a].n / Math.max(1, dims[a].p + dims[a].n));
+  const nr = k => dims[k].n / Math.max(1, dims[k].p + dims[k].n) * 100;
+  const top = dk[0];
+  const sgn = v => v > 0 ? '+' : v < 0 ? '−' : '0';
+  return {
+    title: `${name}: ${n} ulasan → rating → negative ratio`, src: 'Soal acak · gaya latihan dosen', uses: ['dsn-pct', 'dsn-nr'].filter(k => F[k]),
+    soal: [`Berikut ${n} ulasan publik untuk ${name} (${kind}).`, '| ID | Ulasan |', ...rows.map((x, i) => `| R${i + 1} | ${x.t} |`), '',
+      '1. Beri rating 1–5 untuk setiap ulasan.', '2. Hitung persentase rating negatif (1–2), netral (3), positif (4–5).', '3. Klasifikasikan ulasan ke minimal 3 dimensi dan hitung negative ratio tiap dimensi.', '4. Rumuskan 2 strategi untuk dimensi dengan negative ratio tertinggi.'],
+    steps: [
+      { title: '(1) Rating tiap ulasan', why: 'Aturan: 5 semua positif kuat · 4 positif moderat · 3 campuran/datar · 2 negatif ringan · 1 negatif kuat. Rating kamu boleh beda ±1 asal aturannya konsisten & ditulis.', tex: '', rows: [['ID', 'Rating', 'Dimensi & nada'], ...rows.map((x, i) => ['R' + (i + 1), String(x.r), Object.keys(x.a).map(k => k + ' ' + sgn(x.a[k])).join(', ')])] },
+      { title: '(2) Persentase', why: `n = ${n}.`, tex: `\\text{Positif} = \\tfrac{${pos}}{${n}} = ${fmt(pos / n * 100, 2)}\\% \\quad \\text{Netral} = \\tfrac{${neu}}{${n}} = ${fmt(neu / n * 100, 2)}\\% \\quad \\text{Negatif} = \\tfrac{${neg}}{${n}} = ${fmt(neg / n * 100, 2)}\\%` },
+      { title: '(3) Negative ratio per dimensi', why: 'NR = Negatif / (Positif + Negatif); netral tidak masuk pembagi.', tex: '', rows: [['Dimensi', 'Positif', 'Negatif', 'Netral', 'NR'], ...dk.map(k => [k, String(dims[k].p), String(dims[k].n), String(dims[k].z), `${dims[k].n}/${dims[k].p + dims[k].n} = ${fmt(nr(k), 1)}%`])] },
+      { title: '(4) Masalah utama', why: `Negative ratio tertinggi: ${top} (${fmt(nr(top), 1)}%). Baca ulang ulasan negatifnya untuk akar masalah (validasi manual, W7).`, tex: '' },
+      { title: '(4) Dua strategi', why: `Strategi harus spesifik ke ${top}: (a) perbaikan operasional/produk yang langsung menyasar keluhan (target terukur), (b) service recovery + komunikasi (balas ulasan, kompensasi, informasikan perbaikan). KPI: negative ratio ${top} bulan berikutnya.`, tex: '' }
+    ],
+    answer: `(1) ${rows.map((x, i) => 'R' + (i + 1) + ' = ' + x.r).join(', ')}. (2) Positif ${pos}/${n} = ${fmt(pos / n * 100, 2)}%, netral ${neu}/${n} = ${fmt(neu / n * 100, 2)}%, negatif ${neg}/${n} = ${fmt(neg / n * 100, 2)}%. (3) ${dk.map(k => k + ' ' + fmt(nr(k), 1) + '%').join(', ')}. (4) Fokus ${top}: perbaikan langsung atas keluhan + service recovery, pantau NR bulanan.`
+  };
+}
+const GEN = { rfm: genRFM, dosen: () => (Math.random() < 0.5 ? genRange() : genSent()) };
 const PATTERN = {
+  dosen: [['Sentimen', '\\text{aturan rating} \\to \\%\\text{neg/net/pos} \\to NR = \\tfrac{\\text{Neg}}{\\text{Pos}+\\text{Neg}} \\to \\text{2 strategi}'], ['RFM ranges', 'R = \\text{31/12} - \\text{terakhir},\\; w = \\tfrac{\\max-\\min}{5}'], ['Skor & kode', '\\text{R dibalik; kode} = R\\|F\\|M'], ['Segmen dosen', '\\text{Champions} \\to \\text{Loyal} \\to \\text{Pot. Loyalist} \\to \\text{At Risk} \\to \\text{Hibernating}'], ['Prioritas', '\\text{severity} \\times \\text{urgency} \\to \\text{persona} \\to 3\\text{ program}']],
   rfm: [['Tanggal referensi', '\\text{MAX(TransactionDate), bukan TODAY()}'], ['R, F, M mentah', 'R = \\text{ref} - \\text{last},\\; F = \\#\\text{invoice},\\; M = \\sum \\text{Net}'], ['Rank', '\\text{R naik; F, M turun; kembar = rank sama}'], ['Skor', 'S = 6 - \\lceil \\text{rank}/n \\times 5 \\rceil'], ['Kode & FM', '\\text{Kode} = R\\|F\\|M,\\; FM = (F+M)/2'], ['Segmen & aksi', '\\text{grid } R \\times FM \\to \\text{strategi}']],
   clean: [['Unit of analysis', '\\text{1 baris} = \\text{apa?}'], ['Profil & deteksi', '\\text{missing, duplikat, kategori, tanggal, angka, teks, outlier}'], ['Rule', '\\text{kondisi} \\to \\text{aksi} \\to \\text{field/flag baru}'], ['Excel', '\\text{TRIM, LOWER, XLOOKUP, COUNTIFS, NUMBERVALUE, IFERROR}'], ['DQ log', '\\text{issue, deteksi, rule, rows, verifikasi}'], ['Limitasi & etika', '\\text{raw tetap utuh, privasi, bias}']],
   persona: [['Data → segmen', '\\text{RFM / clustering / tema}'], ['Profil segmen', '\\text{jumlah, rata-rata, channel, keluhan}'], ['Persona', '\\text{demografi, perilaku, motivasi, pain point, channel}'], ['Prioritas', '\\text{severity} \\times \\text{urgency}'], ['Strategi', '\\text{key message, channel, offer, goal}']]
 };
-const ES_LABEL = { rfm: 'RFM & rekomendasi', clean: 'Cleaning data', persona: 'Persona & theme-sentiment' };
+const ES_LABEL = { dosen: 'Latihan dosen (bocoran)', teori: 'Essay teori', rfm: 'RFM & rekomendasi', clean: 'Cleaning data', persona: 'Persona & theme-sentiment' };
 function Essay(type, idx) {
   if (!T[ES_TOPIC[type]]) return ES_KEYS.length ? location.replace('#/essay/' + ES_KEYS[0]) : location.replace('#/latihan');
   const t = T[ES_TOPIC[type]];
@@ -227,35 +296,44 @@ function Essay(type, idx) {
 }
 
 /* ================= SIMULASI UJIAN ================= */
-const SIM_MIX = { 1: 3, 2: 5, 3: 5, 4: 5, 5: 5, 6: 4, 7: 3 };
+const SIM_MIX = { 1: 3, 2: 4, 3: 4, 4: 4, 5: 5, 6: 5, 7: 5 };
 const SIM_N = Object.values(SIM_MIX).reduce((a, b) => a + b, 0);
 const SIM_PG_PTS = 2;
-const SIM_ES = ['rfm', 'kasus'];
-const SIM_ES_PTS = 20;
-const SIM_MIN = 100;
+const SIM_ES = ['teori', 'teori', 'dosen'];
+const SIM_ES_PTS = 40 / 3;
+const SIM_MIN = 120;
 function newSim() {
   const pg = [];
-  Object.keys(SIM_MIX).forEach(w => { shuffle(QZ.filter(q => q.week === +w)).slice(0, SIM_MIX[w]).forEach(q => pg.push(q.id)); });
-  const others = ES_KEYS.filter(k => k !== 'rfm');
-  const types = ['rfm', others.length ? pickOne(others) : null].filter(k => k && T[ES_TOPIC[k]]);
-  const essays = types.map(k => { const usePool = !GEN[k] || Math.random() < 0.4; const ex = usePool ? pickOne(T[ES_TOPIC[k]].examples) : GEN[k](); return { type: k, ex: { title: ex.title, src: ex.src, soal: ex.soal, steps: ex.steps, answer: ex.answer, uses: ex.uses } }; });
-  return { v: 1, pg: shuffle(pg), ord: pg.map(() => shuffle([0, 1, 2, 3])), ans: {}, flag: {}, essays, start: Date.now(), dur: SIM_MIN * 60 * 1000, status: 'run', cur: 0, rub: {} };
+  const dq = QZ.filter(q => q.src === 'dosen');
+  Object.keys(SIM_MIX).forEach(w => {
+    const want = SIM_MIX[w], fromD = shuffle(dq.filter(q => q.week === +w)).slice(0, Math.ceil(want / 2));
+    const rest = shuffle(QZ.filter(q => q.week === +w && q.src !== 'dosen')).slice(0, want - fromD.length);
+    fromD.concat(rest).forEach(q => pg.push(q.id));
+  });
+  const essays = [];
+  const teori = T['es-teori'] ? shuffle(T['es-teori'].examples).slice(0, 2) : [];
+  teori.forEach(ex => essays.push({ type: 'teori', ex }));
+  const g = GEN.dosen ? GEN.dosen() : genRFM();
+  essays.push({ type: 'dosen', ex: g });
+  if (essays.length < 3) essays.push({ type: 'rfm', ex: genRFM() });
+  return { v: 2, pg: shuffle(pg), ord: pg.map(id => shuffle(QMAP[id].opts.map((_, i) => i))), esPts: SIM_ES_PTS, pgPts: SIM_PG_PTS, ans: {}, flag: {}, essays: essays.map(E => ({ type: E.type, ex: { title: E.ex.title, src: E.ex.src, soal: E.ex.soal, steps: E.ex.steps, answer: E.ex.answer, uses: E.ex.uses } })), start: Date.now(), dur: SIM_MIN * 60 * 1000, status: 'run', cur: 0, rub: {} };
 }
 function Sim() {
-  const st = Store.get('sim');
+  let st = Store.get('sim');
+  if (st && st.v !== 2) { Store.set('sim', null); st = null; }
   if (st && st.status === 'run') return simRun(st);
   if (st && st.status === 'grade') return simGrade(st);
   const hist = Store.get('simHist', []);
   const pgMax = SIM_N * SIM_PG_PTS;
   mount(`<div class="page narrow">
-    <header class="phead"><div class="kicker">Simulasi ujian</div><h1>Latihan ujian ${SIM_MIN} menit</h1><p class="lead">${SIM_N} PG (${pgMax} poin) + 2 studi kasus (${2 * SIM_ES_PTS} poin). Kasus dikerjakan di kertas, lalu nilai sendiri pakai rubrik langkah.</p></header>
+    <header class="phead"><div class="kicker">Simulasi ujian</div><h1>Latihan ujian ${SIM_MIN} menit</h1><p class="lead">${SIM_N} PG (${pgMax} poin) + 3 essay (40 poin): 2 essay teori + 1 essay hitung gaya latihan dosen. Essay dikerjakan di kertas, lalu nilai sendiri pakai rubrik langkah.</p></header>
     <section class="card"><div class="fmt-list plain">
       <div><span class="num">${SIM_N}</span><span><b>Pilihan ganda — ${SIM_PG_PTS} poin/soal</b><small>${Object.keys(SIM_MIX).map(w => 'W' + w + ' ×' + SIM_MIX[w]).join(' · ')} — acak dari bank ${QZ.length} soal</small></span></div>
-      <div><span class="num">2</span><span><b>Studi kasus — ${SIM_ES_PTS} poin/kasus</b><small>1 kasus RFM (hitungan) + 1 kasus cleaning / persona</small></span></div>
+      <div><span class="num">3</span><span><b>Essay — 40 poin</b><small>2 teori (dari essay dosen + prediksi) + 1 hitungan (RFM ranges / negative ratio, angka acak)</small></span></div>
       <div><span class="num">${icon('timer')}</span><span><b>Timer ${SIM_MIN} menit</b><small>Otomatis submit saat waktu habis. Progress tersimpan kalau halaman ditutup.</small></span></div>
-    </div><p class="note">${icon('bulb')}<span>Format ini tebakan wajar (belum ada bocoran format ujian Brand Analytics). Kalau format asli sudah diketahui, bilang — bisa disesuaikan.</span></p>
+    </div><p class="note">${icon('bulb')}<span>Disusun dari latihan dosen: PG 5 opsi (setengahnya soal asli dosen) + essay teori & hitungan. Bobot poin tebakan wajar.</span></p>
     <div class="row center mt"><button class="btn primary lg" id="simgo">${icon('play')} Mulai simulasi</button></div></section>
-    ${hist.length ? `<div class="sec-h mt-l"><h2>Riwayat</h2></div><div class="card hist">${hist.slice().reverse().map(h => `<div class="hrow"><span>${new Date(h.at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</span><span>PG ${h.pg}/${pgMax}</span><span>Kasus ${fmt(h.es, 1)}/${2 * SIM_ES_PTS}</span><b>${fmt(h.total, 1)}</b></div>`).join('')}</div>` : ''}
+    ${hist.length ? `<div class="sec-h mt-l"><h2>Riwayat</h2></div><div class="card hist">${hist.slice().reverse().map(h => `<div class="hrow"><span>${new Date(h.at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</span><span>PG ${h.pg}/${pgMax}</span><span>Essay ${fmt(h.es, 1)}/40</span><b>${fmt(h.total, 1)}</b></div>`).join('')}</div>` : ''}
   </div>`);
   $('#simgo').onclick = () => { const s = newSim(); Store.set('sim', s); simRun(s); };
 }
@@ -277,13 +355,13 @@ function simRun(st) {
     if (i < N) {
       const Q = QMAP[st.pg[i]], ord = st.ord[i];
       $('#sq').innerHTML = `<article class="card qcard"><div class="row between"><span class="kicker">Soal ${i + 1} dari ${N} · ${SIM_PG_PTS} poin</span><button class="btn ghost sm ${st.flag[i] ? 'flagged' : ''}" id="sflag">${icon('flag')} ${st.flag[i] ? 'Ditandai' : 'Tandai'}</button></div>
-        <div class="qtext">${qText(Q)}</div><div class="opts">${ord.map((oi, j) => `<button class="opt ${st.ans[i] === oi ? 'sel' : ''}" data-oi="${oi}"><span class="ol">${'ABCD'[j]}</span><span class="ot">${esc(Q.opts[oi])}</span></button>`).join('')}</div>
+        <div class="qtext">${qText(Q)}</div><div class="opts">${ord.map((oi, j) => `<button class="opt ${st.ans[i] === oi ? 'sel' : ''}" data-oi="${oi}"><span class="ol">${LETTERS[j]}</span><span class="ot">${esc(Q.opts[oi])}</span></button>`).join('')}</div>
         <div class="row between mt"><button class="btn ghost" id="sprev" ${i === 0 ? 'disabled' : ''}>${icon('chevl')} Sebelumnya</button><button class="btn" id="snext">Berikutnya ${icon('chev')}</button></div></article>`;
       $$('.opt', $('#sq')).forEach(b => { b.onclick = () => { st.ans[i] = +b.dataset.oi; simSave(st); $$('.opt', $('#sq')).forEach(x => x.classList.toggle('sel', x === b)); grid(); }; });
       $('#sflag').onclick = () => { st.flag[i] = !st.flag[i]; simSave(st); q(); };
     } else {
       const j = i - N, E = st.essays[j];
-      $('#sq').innerHTML = `<article class="card qcard"><div class="row between"><span class="kicker">Kasus ${j + 1} · ${ES_LABEL[E.type] || ''} · ${SIM_ES_PTS} poin</span></div>
+      $('#sq').innerHTML = `<article class="card qcard"><div class="row between"><span class="kicker">Essay ${j + 1} · ${ES_LABEL[E.type] || ''} · ${fmt(SIM_ES_PTS, 1)} poin</span></div>
         <div class="soal">${soalHTML(E.ex.soal)}</div><p class="note">${icon('pen')}<span>Kerjakan di kertas dengan langkah lengkap. Pembahasan & rubrik muncul setelah kamu kumpulkan.</span></p>
         <div class="row between mt"><button class="btn ghost" id="sprev">${icon('chevl')} Sebelumnya</button><button class="btn" id="snext" ${j === st.essays.length - 1 ? 'disabled' : ''}>Berikutnya ${icon('chev')}</button></div></article>`;
     }
@@ -314,22 +392,23 @@ function simGrade(st) {
   const N = st.pg.length;
   let right = 0;
   st.pg.forEach((id, i) => { if (st.ans[i] === QMAP[id].ans) right++; });
-  const pgScore = right * SIM_PG_PTS;
-  const esScore = () => st.essays.reduce((s, E, j) => { const r = st.rub[j] || {}; const c = Object.keys(r).filter(k => r[k]).length; return s + c / E.ex.steps.length * SIM_ES_PTS; }, 0);
+  const PGP = st.pgPts || SIM_PG_PTS, ESP = st.esPts || SIM_ES_PTS;
+  const pgScore = right * PGP;
+  const esScore = () => st.essays.reduce((s, E, j) => { const r = st.rub[j] || {}; const c = Object.keys(r).filter(k => r[k]).length; return s + c / E.ex.steps.length * ESP; }, 0);
   const mins = Math.round(((st.end || Date.now()) - st.start) / 60000);
   mount(`<div class="page narrow">
     <header class="phead"><div class="kicker">Hasil simulasi ujian</div><h1>Nilai kamu</h1><p class="lead">Waktu pengerjaan ${mins} menit.</p></header>
-    <section class="card result"><div class="sc-row"><div><small>PG</small><b>${pgScore}</b><span>/${SIM_N * SIM_PG_PTS}</span></div><div><small>Kasus</small><b id="ess">0</b><span>/${st.essays.length * SIM_ES_PTS}</span></div><div class="tot"><small>Total</small><b id="tot">0</b><span>/100</span></div></div>
-      <p class="muted center">PG dinilai otomatis (${right}/${N} benar). Nilai kasus: centang langkah yang kamu tulis dengan benar di kertas.</p></section>
+    <section class="card result"><div class="sc-row"><div><small>PG</small><b>${pgScore}</b><span>/${N * PGP}</span></div><div><small>Essay</small><b id="ess">0</b><span>/${fmt(st.essays.length * ESP, 0)}</span></div><div class="tot"><small>Total</small><b id="tot">0</b><span>/100</span></div></div>
+      <p class="muted center">PG dinilai otomatis (${right}/${N} benar). Nilai essay: centang langkah yang kamu tulis dengan benar di kertas.</p></section>
     <div class="sec-h mt-l"><h2>Studi kasus — nilai sendiri</h2></div>
-    ${st.essays.map((E, j) => `<section class="card rubric" data-j="${j}"><div class="row between"><div class="label">Kasus ${j + 1} · ${ES_LABEL[E.type] || ''}</div><span class="tag" id="rs${j}"></span></div><div class="soal sm">${soalHTML(E.ex.soal)}</div>
+    ${st.essays.map((E, j) => `<section class="card rubric" data-j="${j}"><div class="row between"><div class="label">Essay ${j + 1} · ${ES_LABEL[E.type] || ''}</div><span class="tag" id="rs${j}"></span></div><div class="soal sm">${soalHTML(E.ex.soal)}</div>
       <div class="rsteps">${E.ex.steps.map((s, k) => `<label class="rstep"><input type="checkbox" data-k="${k}" ${st.rub[j] && st.rub[j][k] ? 'checked' : ''}><span class="rb"><span class="step-t">${k + 1}. ${esc(s.title)}</span>${s.rows && s.rows.length ? tableHTML(s.rows, 'sm') : ''}${s.tex ? `<span class="step-math">${tex(s.tex, true)}</span>` : ''}</span></label>`).join('')}</div>${answerHTML(E.ex.answer)}</section>`).join('')}
     <div class="sec-h mt-l"><h2>Review PG</h2><span class="muted sm">${right} benar · ${N - right} salah/kosong</span></div>
     ${st.pg.map((id, i) => { const Q = QMAP[id], ok = st.ans[i] === Q.ans; return `<details class="card rev"><summary><span class="${ok ? 'okc' : 'noc'}">${icon(ok ? 'check' : 'x')}</span><span>${i + 1}. ${esc(Q.q[0]).slice(0, 110)}${Q.q[0].length > 110 ? '…' : ''}</span></summary><div class="qtext">${qText(Q)}</div><div class="opts">${optsHTML(Q, st.ord[i], st.ans[i] == null ? -1 : st.ans[i], true)}</div>${whyHTML(Q)}</details>`; }).join('')}
     <div class="row center mt-l"><button class="btn" id="sdone">Simpan nilai & selesai</button><button class="btn primary" id="snew">${icon('refresh')} Simulasi baru</button></div>
   </div>`);
   function upd() {
-    st.essays.forEach((E, j) => { const r = st.rub[j] || {}; const c = Object.keys(r).filter(k => r[k]).length; $('#rs' + j).textContent = `${fmt(c / E.ex.steps.length * SIM_ES_PTS, 1)} / ${SIM_ES_PTS}`; });
+    st.essays.forEach((E, j) => { const r = st.rub[j] || {}; const c = Object.keys(r).filter(k => r[k]).length; $('#rs' + j).textContent = `${fmt(c / E.ex.steps.length * ESP, 1)} / ${fmt(ESP, 1)}`; });
     const es = esScore(); $('#ess').textContent = fmt(es, 1); $('#tot').textContent = fmt(pgScore + es, 1);
   }
   $$('.rubric').forEach(sec => { const j = +sec.dataset.j; $$('input', sec).forEach(cb => { cb.onchange = () => { st.rub[j] = st.rub[j] || {}; st.rub[j][cb.dataset.k] = cb.checked; simSave(st); upd(); }; }); });
