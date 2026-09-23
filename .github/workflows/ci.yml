@@ -1,0 +1,16 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: Verify content (numbers + LaTeX) and build
+        run: python build/build.py && node --check build/_app.js
+      - name: Secret scan
+        run: |
+          if git ls-files | grep -E '(^|/)\.env$|credentials|secret'; then echo "secret-like file tracked"; exit 1; fi

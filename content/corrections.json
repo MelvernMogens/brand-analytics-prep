@@ -1,0 +1,7 @@
+[
+ ["Slide W2 · Audit Scoring Example", "Weighted score di slide tertulis Google 4.20, Tokopedia 4.20, X 3.15. Kalau dihitung dari bobot & skor di tabel yang sama: <b>Google 4.30, Tokopedia 4.15, X 3.10</b> (Instagram 3.75 sudah benar). Kesimpulan tetap: Google & Tokopedia terkuat, tapi Google paling tinggi.", "#/t/w2-audit"],
+ ["Excel W5 · Facilitator key", "Kunci menulis CUST007 = 345 dan CUST016 = 245 (F score 4). Rumus worksheet-nya sendiri menghasilkan F = 5 karena nilai kembar F = 8 dapat rank 4 → kode <b>355</b> dan <b>255</b>. Segmen tidak berubah (Loyal Customers / Can't Lose Them).", "#/t/w5-calc/3"],
+ ["Slide W5 · Step 5", "\"RFM Code = R Score + F Score + M Score\" maksudnya skor <b>ditempel</b> (5,5,5 → 555), bukan dijumlah. Penjumlahan (3–15) dipakai untuk RFM_Total / RFM_Score seperti di tabel persona W6.", "#/t/w5-calc"],
+ ["Slide W5 · Contoh tabel", "Total spend C1 tertulis \"1,2\" (terpotong). Dari urutan data maksudnya <b>1,200</b> — tetap nilai tertinggi sehingga M = 5.", "#/t/w5-calc/0"],
+ ["Slide W4 · Decision-ready figure", "\"Delivery and staff issues account for 51%\": dari tabel frekuensi 42/140 + 31/140 = <b>52.1%</b> (30% + 22% = 52%). Selisih kecil karena pembulatan, tapi kalau ditanya hitung, jawab 52%.", "#/t/w4-metrics"]
+]
