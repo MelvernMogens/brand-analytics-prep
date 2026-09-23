@@ -590,3 +590,5 @@ details.uf[open]>summary{margin-bottom:6px}
 
 .card.leak{border:1.5px solid var(--red-100);background:linear-gradient(180deg,#fff,#fffafa)}
 .lcard.hot{border-color:var(--red-100)}
+
+@media (max-width:640px){.dtbl th,.dtbl td{padding:7px 9px}.dtbl{font-size:14.5px}}

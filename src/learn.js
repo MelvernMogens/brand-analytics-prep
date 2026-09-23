@@ -31,9 +31,9 @@ function Home() {
       <div class="fmt-list">
         <a href="#/latihan?d=1"><span class="num">${QZ.filter(q => q.src === 'dosen').length}</span><span><b>PG asli dosen (5 opsi A–E)</b><small>kunci + pembahasan kenapa benar & kenapa pengecoh salah</small></span>${icon('chev')}</a>
         <a href="#/essay/teori"><span class="num">E</span><span><b>Essay teori</b><small>3 soal persis dari dosen + 4 prediksi · jawaban model per poin rubrik</small></span>${icon('chev')}</a>
-        <a href="#/essay/dosen"><span class="num">∑</span><span><b>Essay hitungan: kedai kopi & Chitosi</b><small>negative ratio + RFM ranges, dibedah langkah demi langkah + soal acak serupa</small></span>${icon('chev')}</a>
+        <a href="#/essay/dosen"><span class="num">∑</span><span><b>Essay hitungan: kedai kopi & Chitosi</b><small>negative ratio + RFM kuintil tanpa kalkulator, langkah demi langkah + soal acak serupa</small></span>${icon('chev')}</a>
       </div>
-      <p class="note">${icon('bulb')}<span>Pola UTS kemungkinan: PG konsep & kasus W1–W7, essay teori (definisi → bandingkan → contoh → integrasi), dan essay hitung (rating → % → negative ratio; Recency → ranges → kode RFM → segmen → persona → program).</span></p>
+      <p class="note">${icon('bulb')}<span>Pola UTS kemungkinan: PG konsep & kasus W1–W7, essay teori (definisi → bandingkan → contoh → integrasi), dan essay hitung (rating → % → negative ratio; Recency → kuintil (urutkan, n/5 per skor) → kode RFM → segmen → persona → program).</span></p>
     </section>` : ''}
 
     <section class="card fmt">

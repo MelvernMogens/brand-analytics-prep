@@ -12,18 +12,20 @@ rows=[]
 for cid,d,f,m in CH:
     dd,mm,yy = map(int,d.split('/'))
     rows.append(dict(id=cid,last=d,R=(ref-dt.date(yy,mm,dd)).days,F=f,M=m))
-def ranges(vals):
-    lo,hi=min(vals),max(vals); w=(hi-lo)/5
-    return lo,hi,w,[(lo+i*w, lo+(i+1)*w) for i in range(5)]
-def bin_idx(v,lo,w):  # 0..4, top edge inclusive in last bin
-    return min(4,int((v-lo)//w)) if w else 0
-out={'ref':str(ref)}
-for k in 'RFM':
-    lo,hi,w,rg=ranges([r[k] for r in rows]); out[k]=dict(min=lo,max=hi,width=w,ranges=rg)
+# QUINTILE scoring (tanpa kalkulator): urutkan, bagi 5 kelompok sama banyak (n/5 orang).
+# Nilai kembar = rank terbaik (RANK.EQ) -> skor sama. Setara rumus workshop S = 6 - ROUNDUP(rank/n*5).
+n=len(rows); k=n//5
+def rank_min(v, vals, asc):
+    return 1+sum(1 for x in vals if (x<v if asc else x>v))
+def qscore(rank): return 6-math.ceil(rank*5/n)
+out={'ref':str(ref),'k':k}
+for key,asc in (('R',True),('F',False),('M',False)):
+    vals=[r[key] for r in rows]
+    for r in rows: r['rk'+key]=rank_min(r[key],vals,asc)
+    groups={sc:sorted([r[key] for r in rows if qscore(r['rk'+key])==sc], reverse=not asc) for sc in range(5,0,-1)}
+    out[key]=dict(groups={str(sc):g for sc,g in groups.items()}, ranges={str(sc):[min(g),max(g)] for sc,g in groups.items() if g})
 for r in rows:
-    iR=bin_idx(r['R'],out['R']['min'],out['R']['width']); r['r']=5-iR          # small days = 5
-    r['f']=bin_idx(r['F'],out['F']['min'],out['F']['width'])+1
-    r['m']=bin_idx(r['M'],out['M']['min'],out['M']['width'])+1
+    r['r']=qscore(r['rkR']); r['f']=qscore(r['rkF']); r['m']=qscore(r['rkM'])
     r['code']=f"{r['r']}{r['f']}{r['m']}"
     R,F,M=r['r'],r['f'],r['m']
     if R>=4 and F>=4 and M>=4: s='Champions'
@@ -52,7 +54,7 @@ for _,_,a in K:
 for d,x in dims.items(): x['nr']=x['neg']/(x['pos']+x['neg']) if x['pos']+x['neg'] else 0
 out['kopi']=dict(n=n,pos=pos,neu=neu,neg=neg,dims=dims,per=[(i,r,sum(1 for v in a.values() if v<0),sum(1 for v in a.values() if v!=0)) for i,r,a in K])
 (ROOT/'content'/'data'/'leak.json').write_text(json.dumps(out,indent=1))
-for k in 'RFM': print(k, {kk:out[k][kk] for kk in ('min','max','width')}, [(round(a,1),round(b,1)) for a,b in out[k]['ranges']])
+for k in 'RFM': print(k, out[k]['ranges'], {sc:len(g) for sc,g in out[k]['groups'].items()})
 for r in rows: print(r['id'],r['last'],r['R'],r['F'],r['M'],r['code'],r['seg'])
 for s,x in seg.items(): print(s,x['n'],x['M'],x['ids'])
 print('kopi',pos,neu,neg,[round(v*100/n,2) for v in (pos,neu,neg)])
