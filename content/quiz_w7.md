@@ -3,10 +3,10 @@
 
 @q 7 :: w7-prep :: w7-preprocessing
 Ulasan mentah "Packagingnya bagusss 😍" dipreprocess menjadi "packaging bagus positive-emoji". Keputusan preprocessing yang TERSIRAT di sini dan alasannya:
-+ Emoji diubah jadi fitur "positive-emoji" karena emosi adalah sinyal analitis yang harus dipertahankan, bukan dibuang
-- Emoji dibuang karena bukan kata — supaya teks bersih dan mudah dihitung
-- Kata "bagusss" dibuang karena slang tidak baku
-- Kata "Packagingnya" dihapus karena mengandung brand name
++ Emoji diubah jadi fitur "positive-emoji" — emosi adalah sinyal analitis yang dipertahankan
+- Emoji dibuang karena bukan kata baku — supaya teks bersih dan mudah dihitung frekuensinya
+- Kata "bagusss" dibuang karena slang tidak baku dan merusak perhitungan tema
+- Kata "Packagingnya" dihapus karena mengandung nama brand yang harus disaring
 @why
 Persis contoh slide: "Packagingnya bagusss 😍" → "packaging bagus positive-emoji" — emoji 😍 adalah penanda emosi yang DIPERTAHANKAN sebagai fitur; preprocessing terlalu agresif (buang semua emoji) bisa menghapus sinyal.
 "bagusss" justru dirasionalkan jadi "bagus" (bukan dibuang — intensitasnya bermakna); "Packagingnya" di-normalize (lowercase, tokenisasi), bukan dihapus; tidak ada brand name di situ.
@@ -14,10 +14,10 @@ Persis contoh slide: "Packagingnya bagusss 😍" → "packaging bagus positive-e
 
 @q 7 :: w7-prep :: w7-preprocessing
 Dari 20 ulasan Batik Rasa: 3 duplikat persis, 2 spam/kosong, 1 promosi jasa follower (irrelevant). Berapa ulasan yang masuk analisis, dan kenapa duplikat wajib dibuang?
-- 20 — duplikat tetap dihitung karena itu suara konsumen nyata
-+ 14 — duplikat membiaskan frekuensi: satu opini bisa kelihatan seperti banyak orang, tema yang dibahasnya naik share-nya palsu
+- 20 — duplikat tetap dihitung karena itu suara konsumen nyata yang valid
++ 14 — duplikat membiaskan frekuensi: satu opini bisa kelihatan seperti banyak orang
 - 15 — hanya spam dan irrelevant yang boleh dibuang, duplikat harus dipertahankan
-- 14 — duplikat dibuang karena isinya pasti spam
+- 14 — duplikat dibuang karena isinya pasti spam promosi dari akun bot
 @why
 20 - 3 - 2 - 1 = 14. Slide: duplicate review → removed, prevents bias — satu opini terhitung dua kali menggelembungkan frequency analysis dan co-occurrence.
 Duplikat bukan "suara banyak orang" (persis teks yang sama = satu opini tercatat ganda); alasan buang duplikat adalah bias frekuensi, bukan asumsi spam — angka 15 salah hitung, 20 salah total.
@@ -37,10 +37,10 @@ Sentiment sebelum tema salah urutan — sentiment harus dibaca PER TEMA; Prepare
 
 @q 7 :: w7-prep :: w7-theme-coding
 Ulasan "worth it banget sih, mahal tapi worth it" paling tepat di-code ke tema apa, dengan sentimen apa?
-- Problem/Risk — negative, karena mengandung kata "mahal"
-- Price/Value — negative, kata "mahal" menentukan sentimen
-+ Price/Value — positive, karena vonis akhir "worth it" menang atas kata harga negatif
-- Identity/Lifestyle — positive, karena mengandung pujian
+- Problem/Risk — negative, karena ulasan mengandung kata "mahal" di dalamnya
+- Price/Value — negative, satu kata "mahal" sudah cukup menentukan sentimennya
++ Price/Value — positive, vonis akhir "worth it" menang atas kata harga negatif
+- Identity/Lifestyle — positive, karena mengandung pujian dari pelanggan setia
 @why
 Indikator tema Price/Value: worth it, expensive, promo, value for money. Pola "expensive but worth it" (W4/W7): kata harga negatif tapi keputusan akhir positif — vonis akhir lebih menentukan daripada satu kata negatif.
 Problem/Risk butuh indikator broken/fake/unsafe/misleading (tidak ada); "mahal menentukan sentimen" adalah kesalahan kata-vs-keputusan klasik; tidak ada sinyal identitas/keanggotaan di ulasan ini.
@@ -48,9 +48,9 @@ Problem/Risk butuh indikator broken/fake/unsafe/misleading (tidak ada); "mahal m
 
 @q 7 :: w7-sentiment :: w7-sentiment-def
 Laporan model menyimpulkan: "Sentiment keseluruhan brand 60% positif — aman!" Mengapa pembacaan ini berbahaya menurut materi W7?
-- Karena 60% masih di bawah standar industri 75%
-- Karena sentiment otomatis selalu salah dan tidak boleh dipakai
-+ Karena sentiment harus diinterpretasikan PER TEMA — skor total menyembunyikan konflik antar aspek (misal produk disukai tapi layanan dibenci)
+- Karena 60% masih di bawah standar industri 75% yang wajib dicapai
+- Karena sentiment otomatis selalu salah dan sama sekali tidak boleh dipakai
++ Karena sentiment harus dibaca PER TEMA — skor total menyembunyikan konflik antar aspek
 - Karena persentase harus dihitung dari jumlah mention, bukan jumlah review
 @why
 Slide: "Sentiment should be interpreted by theme, not only as one total score." Skor total 60% positif bisa menyembunyikan tema layanan yang 80% negatif — dan keputusan perbaikan dibuat per tema, bukan per angka rata-rata.
@@ -71,9 +71,9 @@ Mixed sentiment butuh puji+keluhan dalam satu review (di sini komponennya satu: 
 @q 7 :: w7-sentiment :: w7-validation-risks
 Sentiment Google Reviews jauh lebih negatif daripada TikTok comments untuk brand yang sama. Risiko apa ini dan tindakan validasinya?
 + Platform bias — triangulate across reviews, social posts, surveys, dan competitor data
-- Sarcasm and irony — manual sample check
-- Mixed sentiment — split by theme/aspect
-- Missing data — imputasi nilai netral
+- Sarcasm and irony — lakukan manual sample check dengan coding notes
+- Mixed sentiment — split by theme/aspect lalu hitung ulang per aspeknya
+- Missing data — lakukan imputasi nilai netral untuk review tanpa label
 @why
 Tone tiap platform memang beda (W4: CS chat 45% negatif vs Instagram 13% — konteks platform membentuk tone; orang datang ke Google untuk komplain). Tindakan slide: triangulasi lintas reviews, social posts, surveys, dan competitor data — jangan bandingkan mentah antar platform tanpa konteks.
 Sarkasme/mixed adalah masalah level kalimat, bukan level sumber; imputasi bukan bagian risiko otomatisasi sentiment.
@@ -98,10 +98,10 @@ Bobot edge adalah frekuensi co-occurrence — bukan ukuran pentingnya isu (isu p
 
 @q 7 :: w7-assoc :: w7-network
 Dalam brand-association network, apa arti sebuah EDGE antara dua kata?
-- Satu kata menyebabkan kata lainnya muncul
-+ Dua kata/makna itu sering muncul BERSAMA dalam review — asosiasi yang terhubung di kepala konsumen
-- Kedua kata punya jumlah kemunculan yang sama
-- Kedua kata berasal dari platform yang sama
+- Satu kata menyebabkan kata lainnya muncul — keduanya terkait hubungan sebab-akibat
++ Dua kata sering muncul BERSAMA dalam review — asosiasi yang terhubung di kepala konsumen
+- Kedua kata punya jumlah kemunculan yang sama persis di seluruh dataset
+- Kedua kata berasal dari platform yang sama dan periode waktu yang sama
 @why
 Slide: edges = frequent co-occurrence — menunjukkan seberapa sering dua makna muncul bersama. "Fake" dan "original" sering co-occur karena orang membahas keaslian — bukan karena saling menyebabkan.
 Membaca edge sebagai sebab-akibat adalah pelanggaran @trap slide (co-occurrence bukan hubungan sebab); edge bukan soal jumlah kemunculan atau platform.
@@ -109,10 +109,10 @@ Membaca edge sebagai sebab-akibat adalah pelanggaran @trap slide (co-occurrence 
 
 @q 7 :: w7-assoc :: w7-listening-matrix
 Social listening menemukan hanya 3 laporan "iritasi kulit" dari ribuan mention (frekuensi rendah) — tapi menyangkut keamanan produk. Menurut Social Listening Issue Matrix, aksi yang tepat?
-- Abaikan — 3 dari ribuan berarti signifikan secara statistik kecil
-- Urgent fix — semua keluhan negatif harus diperbaiki segera
-- Amplify — isu populer layak digencarkan
-+ Management review — low frequency + severe: sedikit tapi berbahaya (risiko reputasi/legal), dibahas di level manajemen
+- Abaikan — 3 dari ribuan berarti terlalu kecil untuk perlu ditindaklanjuti
+- Urgent fix — semua keluhan negatif harus selalu diperbaiki secepat mungkin
+- Amplify — isu yang mulai populer layak digencarkan ke publik yang lebih luas
++ Management review — low frequency + severe: sedikit tapi berbahaya (reputasi/legal)
 @why
 Matriks slide: low frequency + severe (safety concern) → management review. Frekuensi ≠ severity — isu safety jarang tetap butuh eskalasi manajemen (potensi recall, legal, reputasi).
 "Urgent fix" untuk high frequency + negative (masalah luas dan aktif); mengabaikan karena jumlah kecil persis @trap "ukuran kata = kepentingan"; amplify untuk asosiasi positif.
@@ -121,9 +121,9 @@ Matriks slide: low frequency + severe (safety concern) → management review. Fr
 @q 7 :: w7-assoc :: w7-listening-matrix
 45 komplain "kirim lambat" dalam seminggu, banyak komentar cinta "local brand I trust", dan 8 keluhan "mahal tanpa promo". Pasangan issue → action yang benar menurut matriks:
 - Kirim lambat → management review; local trust → urgent fix; mahal → abaikan
-+ Kirim lambat → urgent fix; local trust → amplify message; mahal → communicate (jelaskan value proposition)
++ Kirim lambat → urgent fix; local trust → amplify message; mahal → communicate value
 - Semua yang negatif → urgent fix, semua yang positif → management review
-- Kirim lambat → amplify; local trust → fix; mahal → reposition
+- Kirim lambat → amplify; local trust → fix; mahal → reposition arsitektur harga
 @why
 Kirim lambat = high frequency + negative (many complaints) → urgent fix. "Local brand I trust" = positive association (love/trust/pride) → amplify message. "Mahal tanpa promo" = tension persepsi nilai → communicate value proposition (dengan opsi reposition arsitektur harga bila kronis).
 Opsi lain menukar kotak matriks — amplifier untuk keluhan atau fix untuk pujian jelas membalik logika matriks.
@@ -142,10 +142,10 @@ Honest/credible/safe/consistent persis daftar kata cluster Trust — hafal pasan
 
 @q 7 :: w7-assoc :: w7-bam, w7-network
 Cluster network "kemasan + pecah" (produk sering sampai rusak) paling tepat dibaca sebagai ancaman pada cluster BAM mana, dan responsnya?
-- Ancaman Community — respond with reposition
-- Bukan ancaman cluster mana pun — masalah logistik, bukan asosiasi brand
-- Ancaman Innovation — respond with amplify
-+ Ancaman Performance & Trust ("reliable" gagal, quality risk) — respond with fix (redesign kemasan + QC ekspedisi)
+- Ancaman Community — respond with reposition pesan komunitas lokal
+- Bukan ancaman cluster mana pun — itu masalah logistik, bukan asosiasi brand
+- Ancaman Innovation — respond with amplify inovasi kemasan terbarunya
++ Ancaman Performance & Trust — respond with fix (redesign kemasan + QC ekspedisi)
 @why
 Kemasan pecah menggagalkan asosiasi "reliable" (Performance) dan menggerus kepercayaan (Trust — quality risk). Respons: FIX — perbaikan fisik (redesign kemasan + QC) adalah urgent fix dari matriks, karena keunggulan produk jadi percuma kalau barang sampai rusak.
 "Masalah logistik bukan asosiasi brand" salah — asosiasi terbentuk dari pengalaman nyata konsumen, dan "pecah" justru nempel di benak mereka; amplify untuk asosiasi positif, bukan masalah.

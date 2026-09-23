@@ -14,10 +14,10 @@ Pernyataan "tidak butuh k di muka" adalah sifat HIERARCHICAL, bukan K-Means (jus
 
 @q 6 :: w6-cluster :: w6-hierarchical
 Analis mau melihat pengelompokan alami tema keluhan pelanggan TANPA menentukan jumlah cluster terlebih dahulu, divisualisasikan sebagai pohon. Metode yang tepat dan alasannya?
-- K-Means dengan k ditentukan setelah hasil keluar — pohonnya menunjukkan cluster alami
-+ Hierarchical clustering — dendrogram menunjukkan natural groupings dan jumlah cluster diputuskan saat memotong dendrogram
+- K-Means dengan k ditentukan setelah hasil keluar — hasilnya membentuk pohon cluster alami
++ Hierarchical clustering — dendrogram menunjukkan natural groupings, k diputuskan saat memotongnya
 - Divisive clustering — paling umum dipakai karena kompleksitasnya rendah
-- K-Means dengan k=1 lalu diperbesar bertahap sampai pola terlihat
+- K-Means dengan k=1 lalu diperbesar bertahap sampai pola terlihat jelas
 @why
 Hierarchical tidak butuh pre-defined k: dendrogram menunjukkan bagaimana cluster terbentuk dan bergabung, analyst memotong di ketinggian tertentu UNTUK memilih jumlah cluster — keputusan di akhir, bukan di awal.
 Divisive jarang dipakai justru karena computational complexity tinggi (yang paling umum agglomerative); dua opsi K-Means salah metode — K-Means selalu butuh k di muka.
@@ -37,8 +37,8 @@ Dua opsi lain membalik atau menyamakan arah pembentukan cluster — pola klasik 
 @q 6 :: w6-persona :: w6-seg-persona-strategy
 Apa beda mendasar Segmentation, Persona, dan Strategic Response dalam tiga lapisan materi W6?
 - Ketiganya istilah sama untuk pengelompokan pelanggan berdasarkan data RFM
-- Segmentation = rencana aksi; Persona = data mentah; Strategic Response = pengelompokan
-+ Segmentation = apa yang kelihatan di data (grup RFM/perilaku); Persona = siapa customernya (profil manusiawi per cluster); Strategic Response = bagaimana brand bertindak (rencana aksi per persona)
+- Segmentation = rencana aksi; Persona = data mentah; Strategic Response = pengelompokan pelanggan
++ Segmentation = pola di data; Persona = siapa customernya; Strategic Response = aksi brand
 - Persona adalah versi kecil dari segmentation — bedanya hanya jumlah cluster yang lebih sedikit
 @why
 Tiga lapisan slide: Segmentation menjawab "what the data shows", Persona menjawab "who the customer is" (humanized profile), Strategic Response menjawab "how the brand should act" — alur data → manusia → aksi.
@@ -59,9 +59,9 @@ Opsi lain adalah elemen sah framework — justru RFM_Score yang menandai pelaku 
 @q 6 :: w6-persona :: w6-manual-auto
 Menurut Salminen et al. 2020, perbandingan manual vs automatic persona yang benar:
 - Manual: big data, cepat (hari), murah; automatic: small data, lambat (bulan), mahal
-- Manual dan automatic sama-sama kuantitatif — bedanya hanya ukuran sampel
+- Manual dan automatic sama-sama kuantitatif — bedanya hanya ukuran sampel data
 - Automatic persona lebih kaya nuansa karena diproses mesin, manual lebih dangkal
-+ Manual: small data, kualitatif, lambat (bulan), mahal, nuanced; automatic: big data, kuantitatif, cepat (hari), terjangkau, explicit behaviors
++ Manual: small data, kualitatif, lambat, mahal, nuanced; automatic: big data, cepat, terjangkau
 @why
 Tabel Salminen: manual = small data, qualitative, slow (months), expensive, nuanced; automatic = big data, quantitative, fast (days), affordable, explicit behaviors — dua-duanya sama-sama "a face to data".
 Opsi 1 membalik seluruh tabel; "sama-sama kuantitatif" salah (manual kualitatif); nuance justru kekuatan manual yang hilang di automatic — bukan sebaliknya.
@@ -107,8 +107,8 @@ Opsi 1 menukar aturan segmen B (4 = Lost, bukan At Risk yang berarti skor 6); me
 @q 6 :: w6-strategy :: w6-severity-urgency, w6-strategy-table
 Segmen Champion brand fiktif "Gorengan Gurih" beranggotakan 5 pelanggan: RFM_Score 14, 15, 12, 13, 11. Berapa rata-rata RFM_Score segmen ini — dan menghitungnya per segmen berguna untuk apa?
 - 13,0 — rata-rata segmen berguna untuk menentukan jumlah cluster K-Means
-+ 13,0 — memprofilkan segmen (behavioral traits) sebagai bahan bangun persona dan strategy table
-- 65,0 — total skor dibaca langsung sebagai rata-rata
++ 13,0 — ringkasan segmen jadi bahan profil persona dan strategy table
+- 65,0 — total skor seluruh anggota segmen dibaca langsung sebagai rata-rata
 - 12,5 — rata-rata semua pelanggan di dataset, bukan segmen Champion saja
 @why
 Rata-rata Champion = (14+15+12+13+11)/5 = 65/5 = 13,0. Ringkasan per segmen (jumlah orang, rata-rata skor/monetary, channel dominan, persen keluhan) adalah bahan Behavioral Traits untuk persona dan dasar mengisi strategy table.
@@ -152,9 +152,9 @@ Frekuensi tinggi bukan otomatis loyalty (loyalty = aset Champion); Value Seeker 
 
 @q 6 :: w6-persona :: w6-persona-types, w6-seg-persona-strategy
 Seorang analyst melapor: "Persona kami: laki-laki, 40 tahun, RFM_Score 4, recency 90 hari, frekuensi 2×, monetary Rp900.000." Mengapa ini BELUM layak disebut persona?
-+ Tidak ada Motivations, Pain Points, dan Preferred Channels — tanpa 5 elemen lengkap itu masih segmen dengan data demografi, bukan profil manusiawi
-- Sudah layak — ada demografi dan data RFM lengkap
-- Karena RFM_Score 4 terlalu rendah untuk dijadikan persona
++ Belum ada Motivations, Pain Points, dan Preferred Channels — ini masih segmen
+- Sudah layak — ada demografi dan data RFM lengkap untuk membangun persona
+- Karena RFM_Score 4 terlalu rendah untuk dijadikan dasar sebuah persona
 - Karena persona harus dibangun dari wawancara manual, bukan dari data RFM
 @why
 Persona = humanized profile 5 elemen (Demographics, Behavioral Traits, Motivations, Pain Points, Preferred Channels). Laporan itu baru punya demografi + angka perilaku (what the data shows) — masih segmen. Kalau gak ada motivasi/pain points, itu belum "who the customer is".

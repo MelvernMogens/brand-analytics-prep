@@ -584,3 +584,6 @@ details.uf[open]>summary{margin-bottom:6px}
 .sbar b{text-align:right;font-variant-numeric:tabular-nums}
 .ro.bad b{color:var(--red)}.ro.good b{color:var(--green)}
 @media (max-width:640px){.sbar{grid-template-columns:110px 1fr 46px;font-size:13px}.rc{min-height:52px}.rc span{font-size:11px}.dtbl td{max-width:260px}}
+/* scroll-hint shadow on horizontally scrollable tables */
+.tbl-wrap{background:linear-gradient(90deg,#fff 30%,rgba(255,255,255,0)) left/24px 100% no-repeat local,linear-gradient(270deg,#fff 30%,rgba(255,255,255,0)) right/24px 100% no-repeat local,radial-gradient(farthest-side at 0 50%,rgba(15,23,42,.14),transparent) left/10px 100% no-repeat scroll,radial-gradient(farthest-side at 100% 50%,rgba(15,23,42,.14),transparent) right/10px 100% no-repeat scroll;background-color:#fff}
+.dtbl tbody tr:nth-child(even) td{background:rgba(248,250,252,.6)}

@@ -64,10 +64,10 @@ Pie banyak slice masuk daftar "avoid" (susah dibandingkan secara visual); line c
 
 @q 4 :: w4-viz :: w4-chart-choice
 Pertanyaan manajemen: "Bagaimana volume review mingguan kami berkembang sejak kampanye #LariPagi 8 minggu lalu?" Chart yang paling tepat?
-- Pie chart komposisi review per minggu
-+ Line chart (time-series) volume review per minggu
-- Boxplot sebaran review
-- Stacked bar per kategori keluhan
+- Pie chart komposisi review per minggu — slice terbesar langsung terlihat
++ Line chart (time-series) volume review per minggu sejak kampanye
+- Boxplot sebaran jumlah review mingguan selama 8 minggu kampanye
+- Stacked bar per kategori keluhan — tumpukan menunjukkan tren mingguan
 @why
 Task-nya show change over time → line chart / time-series bar; tren naik-turun mingguan langsung terbaca dari kemiringan garis.
 Pie tidak menunjukkan urutan waktu; boxplot untuk distribution (bukan tren); stacked bar kategori menjawab "keluhan apa", bukan "kapan".
@@ -76,9 +76,9 @@ Pie tidak menunjukkan urutan waktu; boxplot untuk distribution (bukan tren); sta
 @q 4 :: w4-viz :: w4-chart-choice, w4-metric-fit
 Tim LariLaju hanya melaporkan "rata-rata rating 3.9 — sehat!" ke manajemen. Menurut materi visualisasi, apa yang salah dan chart apa yang seharusnya dipakai?
 - Tidak ada yang salah — average adalah ringkasan terbaik untuk manajemen
-+ Rata-rata bisa menyembunyikan polarisasi (bimodal) — pakai histogram/boxplot dan cek low-star share
-- Chart yang tepat adalah line chart tren rata-rata bulanan
-- Ganti dengan pie chart komposisi sentiment agar lebih menarik
++ Rata-rata bisa menyembunyikan polarisasi (bimodal) — pakai histogram/boxplot
+- Chart yang tepat adalah line chart tren rata-rata rating bulanan
+- Ganti dengan pie chart komposisi sentiment supaya lebih menarik dibaca
 @why
 Slide: "Show distribution → histogram, boxplot; avoid when: only showing an average." Mean 3.9 bisa menghaluskan kenyataan bahwa 18% pelanggan kasih bintang rendah — distribusi sering lebih berguna daripada average.
 Line chart rata-rata tetap menyembunyikan polarisasi (masalahnya angka tunggal, bukan waktunya); pie chart sentiment bahkan lebih buruk lagi.
@@ -108,9 +108,9 @@ Question fit soal chart menjawab pertanyaan lain; sample disclosure soal N dan s
 
 @q 4 :: w4-sentiment :: w4-ladder
 Setelah kampanye #LariPagi, review negatif LariLaju naik. Manajer menyimpulkan: "Kampanye menyebabkan review negatif naik — ganti agency!" Pernyataan manajer berada di anak tangga mana, dan apa yang salah?
-- Description — benar, karena hanya melaporkan yang terlihat di data
+- Description — benar, karena hanya melaporkan apa yang terlihat di data
 - Association — benar, karena kampanye dan review negatif bergerak bersama
-+ Causality — dan belum didukung bukti; data hanya mendukung association dengan penjelasan bersaing (ekspektasi naik ATAU service gap terekspos)
++ Causality — klaim kausal belum didukung bukti; data baru mendukung association
 - Bukan tangga mana pun — itu opini manajerial, bukan klaim analitis
 @why
 "X menyebabkan Y" adalah tangga 3 (Causality) yang menuntut stronger design and evidence. Data spike hanya menunjukkan koresi waktu — association — dan slide W4 eksplisit memberi dua penjelasan bersaing: kampanye menaikkan ekspektasi ATAU mengekspos service gap yang sudah ada.
@@ -162,10 +162,10 @@ Low-star share = review 1–2 bintang dibagi total review: (4+2)/40 = 15,0%. Sli
 
 @q 4 :: w4-eda :: w4-eda-readiness
 Dataset review brand fiktif "Batik Rasa": 300 baris mentah, 8 duplikat dan 4 review kosong dibuang. sentiment_label ada tapi rumusnya tidak didokumentasikan, data dictionary belum diperbarui, log belum direkonsiliasi. Berapa baris siap analisis, dan bolehkah chart langsung dibuat?
-- 288 baris — boleh, karena barisnya sudah bersih
-- 296 baris — cukup buang duplikatnya saja
+- 288 baris — boleh, karena barisnya sudah bersih dan siap divisualisasikan
+- 296 baris — cukup buang duplikatnya saja, review kosong tidak masalah
 - 300 baris — data mentah memang boleh langsung dipakai untuk eksplorasi
-+ 288 baris — belum boleh: dokumentasi derived fields, dictionary, dan log harus beres dulu supaya chart bisa ditelusuri
++ 288 baris — belum boleh: dokumentasi, dictionary, dan log harus beres dulu
 @why
 300 - 8 - 4 = 288 baris. Tapi aturan slide: "No chart should leave the analyst's desk" tanpa jawaban jelas "cleaned field mana yang menghasilkan figure ini?" — sentiment_label tanpa rumus + dictionary belum update + log belum reconcile = 3 item readiness GAGAL.
 Membuang review kosong saja tidak cukup (296 salah hitung); data mentah tanpa clean fields justru melanggar readiness; baris bersih bukan satu-satunya syarat — traceability juga.
@@ -185,21 +185,22 @@ Mulai dari Visualise tanpa ringkasan = chart tanpa konteks N; Validate di awal t
 
 @q 4 :: w4-sentiment :: w4-sentiment-limits
 Word cloud review LariLaju menonjolkan kata "promo" (count paling kecil dari 4 kata besar). Tim sosmed menyimpulkan: "Kata promo membesar = kampanye diingat, tinggal tambah budget!" Apa pembacaan yang benar?
-+ Word cloud adalah alat eksplorasi — "promo" bisa jadi campaign-specific noise; wajib cek konteks lewat sample review, theme cross-check, dan perbandingan platform sebelum menambah budget
++ Word cloud adalah alat eksplorasi — "promo" bisa jadi campaign noise, cek konteks dulu
 - Tim sosmed benar — ukuran kata di word cloud adalah bukti efektivitas kampanye
-- Kata "promo" harus dihapus dari dataset karena bukan kata brand
-- Word cloud tidak berguna untuk analisis brand apa pun
+- Kata "promo" harus dihapus dari dataset karena bukan kata brand yang sah
+- Word cloud tidak berguna untuk analisis brand apa pun — ganti bar chart saja
 @why
 Slide W4: word/tag cloud itu exploration device — ukuran kata BUKAN insight final ("avoid when: treating word size as final insight"). Promo justru diberi catatan "may be campaign-specific noise": frekuensinya naik karena kampanye jalan, bukan bukti brand diingat positif.
 Menghapus kata promo justru membuang sinyal; "tidak berguna apa pun" terlalu ekstrem — word cloud berguna untuk eksplorasi awal asal divalidasi.
+Sebelum menambah budget, cek konteks dulu: sample review, theme cross-check, dan perbandingan antar platform.
 @end
 
 @q 4 :: w4-sentiment :: w4-validation-steps
 Validasi manual sample 50 komentar LariLaju: 42 label model cocok dengan pembacaan manusia, 8 salah. Berapa validation rate-nya, dan bolehkah hasil sentiment langsung dipakai untuk rekomendasi brand?
-- 84% — boleh langsung dipakai karena di atas 80%
+- 84% — boleh langsung dipakai karena angkanya sudah di atas ambang 80%
 - 16% — itu tingkat kesalahan yang masih wajar untuk model otomatis
-- 8% — hanya menghitung komentar yang salah
-+ 84% — belum: konflik harus dijelaskan dan aturan koreksi didokumentasikan dulu (conflicts need explanation, hasil harus auditable)
+- 8% — hanya menghitung komentar yang salah label, bukan tingkat kecocokan
++ 84% — belum: konflik dijelaskan dan aturan koreksi didokumentasikan dulu
 @why
 Validation rate = 42/50 = 84%. Tapi slide: label yang bentrok dengan pembacaan manusia harus DIJELASKAN dan metode/sample size/correction rule didokumentasikan sebelum hasil dipakai — angka agreement saja belum cukup.
 16% adalah error rate (bukan validation rate); 8% salah satuan; ambang "di atas 80% boleh rilis" tidak ada di materi — yang menentukan adalah proses koreksi + dokumentasi.
